@@ -4,6 +4,7 @@ public class TriggerActivateObject : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     public Door _door;
+    public string _tag = "Key";
     void Start()
     {
         
@@ -17,7 +18,7 @@ public class TriggerActivateObject : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Key")
+        if (other.tag == _tag)
         {
             _door.Open();
         }
