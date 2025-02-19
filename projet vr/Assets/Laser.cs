@@ -24,16 +24,17 @@ public class Laser : MonoBehaviour
         Vector3 start = startPoint.position;
         Vector3 end = endPoint.position;
 
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, end);
-
         RaycastHit hit;
         if (Physics.Raycast(start, (end - start), out hit))
         {
             if (hit.collider.gameObject.tag != "Player")
             {
                 Debug.Log("Laser hit: " + hit.collider.gameObject.name);
+                end = hit.point; // Mettre à jour la position de fin du laser au point d'impact
             }
         }
+
+        lineRenderer.SetPosition(0, start);
+        lineRenderer.SetPosition(1, end);
     }
 }
