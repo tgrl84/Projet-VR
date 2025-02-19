@@ -4,19 +4,17 @@ public class Laser : MonoBehaviour
 {
     public Transform startPoint;
     public Transform endPoint;
-    public LineRenderer lineRenderer;
+    public GameObject laserPrefab; // Prefab du cylindre représentant le laser
+    public Door door;
+
+    private GameObject laserInstance;
 
     void Start()
     {
-        if (lineRenderer == null)
+        if (laserPrefab != null)
         {
-            lineRenderer = gameObject.AddComponent<LineRenderer>();
+            laserInstance = Instantiate(laserPrefab, startPoint.position, Quaternion.identity);
         }
-        lineRenderer.startWidth = 0.1f;
-        lineRenderer.endWidth = 0.1f;
-        lineRenderer.positionCount = 2;
-        lineRenderer.startColor = Color.red;
-        lineRenderer.endColor = Color.red;
     }
 
     void Update()
@@ -27,14 +25,29 @@ public class Laser : MonoBehaviour
         RaycastHit hit;
         if (Physics.Raycast(start, (end - start), out hit))
         {
-            if (hit.collider.gameObject.tag != "Player")
+            if (hit.collider.gameObject.tag != "laser")
             {
                 Debug.Log("Laser hit: " + hit.collider.gameObject.name);
-                end = hit.point; // Mettre à jour la position de fin du laser au point d'impact
+                end = hit.point;
+                door.Open();
+            }
+            else
+            {
+                door.Close();
             }
         }
 
-        lineRenderer.SetPosition(0, start);
-        lineRenderer.SetPosition(1, end);
+        if (laserInstance != null)
+        {
+            UpdateLaser(start, end);
+        }
+    }
+
+    void UpdateLaser(Vector3 start, Vector3 end)
+    {
+        laserInstance.transform.position = (start + end) / 2;
+        laserInstance.transform.LookAt(end);
+        float distance = Vector3.Distance(start, end);
+        laserInstance.transform.localScale = new Vector3(0.1f, 0.1f, distance);
     }
 }

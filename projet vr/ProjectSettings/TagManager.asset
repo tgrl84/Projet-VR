@@ -9,6 +9,7 @@ TagManager:
   - Pyramid
   - Cube
   - Earth
+  - laser
   layers:
   - Default
   - TransparentFX
