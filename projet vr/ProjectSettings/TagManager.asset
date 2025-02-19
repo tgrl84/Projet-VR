@@ -6,6 +6,9 @@ TagManager:
   tags:
   - Anchor
   - Key
+  - Pyramid
+  - Cube
+  - Earth
   layers:
   - Default
   - TransparentFX
